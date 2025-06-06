@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxRect;
 import views.ObtancleView;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
@@ -45,7 +46,6 @@ class PlayState extends FlxState
 	public function createObtangle(x:Float, y:Float, width:Int, height:Int)
 	{
 		var obtancle = new ObtancleView(x, y, width, height);
-		// obtancle.physicsBodyComponent.bodyType = BodyType.STATIC;
 		add(obtancle);
 	}
 
@@ -65,7 +65,11 @@ class PlayState extends FlxState
 			createObtangle(_currentXScreen + 400, _scrollBountScreenHeight - _scrollBountScreenHeight * two, Std.int(FlxG.width * 0.15),
 				Std.int(_scrollBountScreenHeight * 0.8));
 
+			#if (desktop || web)
 			_currentXScreen += Std.int(FlxG.width / 2);
+			#else
+			_currentXScreen += Std.int(FlxG.width) - 400;
+			#end
 		}
 	}
 

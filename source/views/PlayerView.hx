@@ -1,5 +1,6 @@
 package views;
 
+import components.AnimationPlayer;
 import components.CbTypes;
 import flixel.addons.nape.FlxNapeSpace;
 import nape.dynamics.InteractionFilter;
@@ -20,15 +21,23 @@ class PlayerView extends FlxSprite
 
 	var _movement:Movement;
 	var _physicsBodyComponent:PhysicsBodyComponent;
-
+	var _animation:AnimationPlayer;
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
 		width = 16.0;
 		height = 16.0;
 		speed = 200;
-		makeGraphic(Std.int(width), Std.int(height), FlxColor.LIME);
-
+		loadGraphic(AssetPaths.fogel_anim_3__png, true, 110, 101);
+		
+		#if (desktop || web)
+		scale.set(0.7, 0.7);
+		#else
+		scale.set(2, 2);
+		#end 
+		
+		_animation = new AnimationPlayer(this.animation);
+		
 		componentContainer = new ComponentContainer();
 
 		var physicsBody = new Body(BodyType.DYNAMIC);
@@ -44,11 +53,14 @@ class PlayerView extends FlxSprite
 		physicsBody.userData.playerView = this;
 		_physicsBodyComponent = new PhysicsBodyComponent(x, y, width, height, physicsBody);
 
-		_movement = new Movement(speed);
+		_movement = new Movement(speed, _animation);
 		_movement.physicsComponent = _physicsBodyComponent;
 
 		componentContainer.addComponent(_physicsBodyComponent, "physicsBody");
 		componentContainer.addComponent(_movement, "movement");
+		componentContainer.addComponent(_animation, "animation");
+
+		// _animation.fly();
 	}
 
 	override public function update(elapsed:Float):Void

@@ -25,7 +25,6 @@ class PhysicsBodyComponent implements IComponent
 		this.height = height;
 		this.velocity = new FlxPoint();
 		this.physicsBody = body;
-
 		physicsBody.position.setxy(x + width, y + height);
 	}
 
