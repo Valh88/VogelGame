@@ -12,9 +12,10 @@ class ComponentContainer implements IComponentContainer
 		components = new Map<String, IComponent>();
 	}
 
-	public function addComponent(component:IComponent, name:String):Void
+	public function addComponent<T:IComponent>(component:T, name:String):T
 	{
 		components.set(name, component);
+		return component;
 	}
 
 	public function removeComponent(name:String):Void
@@ -22,16 +23,27 @@ class ComponentContainer implements IComponentContainer
 		components.remove(name);
 	}
 
-	public function getComponent(name:String):IComponent
+	public function getComponent<T:IComponent>(name:String, type:Class<T>):T
 	{
-		return components.get(name);
+		var component = components.get(name);
+		if (component != null && Std.isOfType(component, type)) {
+			return cast component;
+		}
+		return null;
+	}
+
+	public function hasComponent(name:String):Bool
+	{
+		return components.exists(name);
 	}
 
 	public function update(elapsed:Float):Void
 	{
 		for (component in components)
 		{
-			component.update(elapsed);
+			if (component.active) {
+				component.update(elapsed);
+			}
 		}
 	}
 
@@ -41,5 +53,6 @@ class ComponentContainer implements IComponentContainer
 		{
 			component.destroy();
 		}
+		components.clear();
 	}
 }
