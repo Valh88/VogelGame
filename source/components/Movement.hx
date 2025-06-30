@@ -119,7 +119,7 @@ class Movement implements IComponent
 		#end
 		
 		if (!_isFlying && velocity.y > 0) {
-			_targetAngle = 10;
+			_targetAngle = 20;
 		} else if (!_isFlying && velocity.y <= 0) {
 			_targetAngle = 0;
 		}
