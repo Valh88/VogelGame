@@ -53,7 +53,7 @@ class PlayerView extends FlxSprite
 		physicsBody.userData.playerView = this;
 		_physicsBodyComponent = new PhysicsBodyComponent(x, y, width, height, physicsBody);
 
-		_movement = new Movement(speed, _animation);
+		_movement = new Movement(speed, _animation, this);
 		_movement.physicsComponent = _physicsBodyComponent;
 
 		componentContainer.addComponent(_physicsBodyComponent, "physicsBody");
